@@ -37,9 +37,9 @@ const PlayList = () => {
       }))
     }
     Promise.allSettled(promises).then(results => {
-      results.forEach( (r, i) => {
-        if(r.status == 'fulfilled') dispatch(addSound(makeMusicEntityOf(r.value,URL.createObjectURL(fileList[i]))))
-        else console.log("error for reason: ",r.reason ) //reemplazar a futuro para mensajes de error
+      results.forEach((r, i) => {
+        if (r.status == 'fulfilled') dispatch(addSound(makeMusicEntityOf(r.value, URL.createObjectURL(fileList[i]))))
+        else console.log("error for reason: ", r.reason) //reemplazar a futuro para mensajes de error
       })
     })
 
@@ -65,7 +65,7 @@ const PlayList = () => {
   )
 }
 
-function makeMusicEntityOf(metadata: mm.IAudioMetadata, url : string): MusicEntity {
+function makeMusicEntityOf(metadata: mm.IAudioMetadata, url: string): MusicEntity {
   return {
     title: metadata.common.title ? metadata.common.title : "",
     autor: metadata.common.artist,
