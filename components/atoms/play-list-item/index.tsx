@@ -1,14 +1,21 @@
+import { EntityId } from "@reduxjs/toolkit";
+import { selectSoundById } from "app/features/sounds/soundsSlice";
+import { useAppSelector } from "app/hooks";
+
 interface Props{
-  name: string,
+  id: EntityId,
 }
 
-const PlayListItem = ({name} : Props)  => {
+const PlayListItem = ({id} : Props)  => {
+  const sound = useAppSelector( state => selectSoundById(state,id))
   return (
-    <div className="bg-neutral3 lowercase text-textPrimary">
-      {name}
+    <div className="bg-transparent lowercase text-textPrimary text-xl text-center capitalize hover:bg-neutral1" key={id}>
+      {sound ? sound.title : "titulo desconocido"}
     </div>
   )
 }
+
+
 
 
 export default PlayListItem;

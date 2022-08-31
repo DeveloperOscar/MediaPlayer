@@ -7,9 +7,9 @@ import ProgressBar from "components/atoms/media-player/progress-bar";
 
 const MediaControl = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <ProgressBar currentTime={30000} duration={60000}/>
-      <div className="flex">
+      <div className="flex w-full justify-around">
         <ShuffleButton />
         <BackwardStepButton />
         <PlayButton />
