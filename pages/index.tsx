@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 
 const Home: NextPage = () => {
   return (
-    <div className={"flex flex-column justify-around py-20 items-center"}> 
+    <div className={"flex flex-column justify-around p-2 md:py-10 items-center"}> 
       <Head>
         <title>Reproductor Multimedia App</title>
         <meta name="description" content="Reproductor multimedia sencillo" />

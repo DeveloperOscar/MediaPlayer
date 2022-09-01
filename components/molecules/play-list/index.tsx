@@ -30,7 +30,6 @@ const PlayList = () => {
     setState("bg-transparent")
     const fileList = e.dataTransfer.files;
     const promises: Promise<mm.IAudioMetadata>[] = [];
-
     for (let i = 0; i < fileList.length; ++i) {
       promises.push(mm.parseBlob(fileList[i], {
         duration: true
@@ -46,7 +45,7 @@ const PlayList = () => {
   }, [])
 
   return (
-    <div className={`px-4 py-2 h-[200px] md:h-[500px] flex flex-col justify-center gap-5 `} onDragOver={onDragOver} onDrop={onDrop} onDragLeave={onDragLeave}>
+    <div className={`px-4 py-2 h-full sm:h-[200px] md:h-[500px] flex flex-col justify-center gap-5 overflow-auto`} onDragOver={onDragOver} onDrop={onDrop} onDragLeave={onDragLeave}>
       {
         idsSounds.length > 0 ?
           idsSounds.map((id) => <PlayListItem id={id} key={id} />)
@@ -67,11 +66,10 @@ const PlayList = () => {
 
 function makeMusicEntityOf(metadata: mm.IAudioMetadata, file: File): MusicEntity {
   let name = file.name.replace(/\.\w+/g,""); 
-  name = name.replace(/\s+/," ").trim()
-  const [autor,title] = name.split("-");
+  const [autor,title] = name.trim().split("-");
   return {
-    title: metadata.common.title ? metadata.common.title : title,
-    autor: metadata.common.artist ? metadata.common.artist : autor,
+    title: metadata.common.title ? metadata.common.title : title ? title : "desconocido",
+    autor: metadata.common.artist ? metadata.common.artist : autor ? autor : "desconocido",
     id: uuidv4(),
     album: metadata.common.albumartist,
     genre: metadata.common.genre ? metadata.common.genre[0] : undefined,

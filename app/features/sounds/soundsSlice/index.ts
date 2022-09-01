@@ -31,5 +31,13 @@ const soundsSlice = createSlice({
 
 export default soundsSlice.reducer;
 export const { addSound } = soundsSlice.actions;
-export const {selectIds: selectSoundIds, selectById: selectSoundById} =  soundsAdapter.getSelectors((state: RootState)  => state.sounds)
+export const {
+  selectIds: selectSoundIds, 
+  selectById: selectSoundById, 
+  selectTotal: selectSoundsTotal
+} =  soundsAdapter.getSelectors((state: RootState)  => state.sounds)
 //podemos exportar tambien otros selectores , ya sean memorizados o los normales
+
+
+
+
