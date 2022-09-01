@@ -45,18 +45,18 @@ const PlayList = () => {
 
   }, [])
 
-
   return (
     <div className={`px-4 py-2 h-[200px] md:h-[500px] flex flex-col justify-center gap-5 `} onDragOver={onDragOver} onDrop={onDrop} onDragLeave={onDragLeave}>
       {
         idsSounds.length > 0 ?
-          idsSounds.map((id) => <PlayListItem id={id} />)
+          idsSounds.map((id) => <PlayListItem id={id} key={id} />)
           : <div className={`flex flex-col justify-center items-center w-full h-full border-4 border-dashed border-acent2 ${state}`}>
             <Image
               src="/img/cloudsound.svg"
               layout="fixed"
               width={200}
               height={200}
+              priority
             />
             <p className="font-mont md:text-xl">Arrastra y suelta tus pistas de audio favoritas</p>
           </div>
