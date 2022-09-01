@@ -38,7 +38,7 @@ const PlayList = () => {
     }
     Promise.allSettled(promises).then(results => {
       results.forEach((r, i) => {
-        if (r.status == 'fulfilled') dispatch(addSound(makeMusicEntityOf(r.value, URL.createObjectURL(fileList[i]))))
+        if (r.status == 'fulfilled') dispatch(addSound(makeMusicEntityOf(r.value, fileList[i])))
         else console.log("error for reason: ", r.reason) //reemplazar a futuro para mensajes de error
       })
     })
@@ -65,17 +65,20 @@ const PlayList = () => {
   )
 }
 
-function makeMusicEntityOf(metadata: mm.IAudioMetadata, url: string): MusicEntity {
+function makeMusicEntityOf(metadata: mm.IAudioMetadata, file: File): MusicEntity {
+  let name = file.name.replace(/\.\w+/g,""); 
+  name = name.replace(/\s+/," ").trim()
+  const [autor,title] = name.split("-");
   return {
-    title: metadata.common.title ? metadata.common.title : "",
-    autor: metadata.common.artist,
+    title: metadata.common.title ? metadata.common.title : title,
+    autor: metadata.common.artist ? metadata.common.artist : autor,
     id: uuidv4(),
     album: metadata.common.albumartist,
     genre: metadata.common.genre ? metadata.common.genre[0] : undefined,
     currentTime: 0,
     duration: metadata.format.duration ? metadata.format.duration : 0,
     status: "open",
-    url
+    url: URL.createObjectURL(file)
   }
 }
 
