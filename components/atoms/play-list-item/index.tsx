@@ -9,12 +9,12 @@ interface Props{
 const PlayListItem = ({id} : Props)  => {
   const sound = useAppSelector( state => selectSoundById(state,id))
   return (
-    <div className="bg-transparent lowercase text-textPrimary text-xl text-center capitalize hover:bg-neutral1 flex justify-between">
-      <p>
+    <div className="bg-transparent lowercase text-textPrimary text-xl  capitalize hover:bg-neutral1 flex justify-between">
+      <p className="text-truncate whitespace-nowrap w-[70%]">
         {sound ? sound.title : "titulo desconocido"}
       </p>
       <p>
-        {formatDuration(sound?.duration ? sound?.duration : 0)}
+        {formatDuration((sound)? (sound.duration - sound.currentTime) : 0)}
       </p>
     </div>
   )

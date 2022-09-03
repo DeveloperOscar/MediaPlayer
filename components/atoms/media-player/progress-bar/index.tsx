@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
 interface Props {
-  currentTime: Number;
-  duration: Number;
+  currentTime?: Number;
+  duration?: Number;
 }
 
 const ProgressBar = ({ currentTime, duration }: Props) => {

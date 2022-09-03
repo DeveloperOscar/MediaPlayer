@@ -8,7 +8,7 @@ interface Props {
 
 function MediaButton({ icon , onClick}: Props) {
   return (
-    <button onClick={onClick} className={" flex justify-center rounded-full px-3 py-1 hover:bg-neutral1 active:bg-primary"}>
+    <button onClick={onClick} className={" flex justify-center rounded-full px-3 items-center py-1 hover:bg-neutral1 active:bg-primary"}>
       <FontAwesomeIcon icon={icon} color={"#dacdc6"} className={"w-[2em]"}/>
     </button>
   )

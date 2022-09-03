@@ -1,23 +1,58 @@
-import { selectSoundsTotal } from "app/features/sounds/soundsSlice";
-import { useAppSelector } from "app/hooks";
+import { selectSoundById, setCurrentTimeById, setStatusOpenById } from "app/features/sounds/soundsSlice";
+import { useAppDispatch, useAppSelector } from "app/hooks";
 import CardContainer from "components/atoms/card-container";
 import MediaTitle from "components/atoms/media-title";
 import MediaControl from "components/molecules/media-control";
+import { useEffect } from "react";
+import { selectCurrentId, setStatusPlay } from "app/features/musicPlayerSlice";
 import PlayList from "components/molecules/play-list";
-import { Fragment } from "react";
-import DropAreaFiles from "components/atoms/drop-area-files";
+import { EntityId } from "@reduxjs/toolkit";
 
-const MusicPlayer = () => {
-  const total = useAppSelector(selectSoundsTotal)
+interface Props {
+  firstSoundId: EntityId
+}
+
+const MusicPlayer = ({ firstSoundId }: Props) => {
+  const currentSoundId = useAppSelector(selectCurrentId)
+  const currentSound = useAppSelector((state) => selectSoundById(state, currentSoundId ? currentSoundId : firstSoundId ));
+  const status = useAppSelector(state => state.musicPlayer.status);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const audio = document.getElementById("audio") as HTMLAudioElement | null;
+    if (audio != null) {
+      audio.onload = function() {
+        audio.currentTime = currentSound ? currentSound.currentTime : 0
+      }
+      audio.ontimeupdate = function() {
+        dispatch(setCurrentTimeById({
+          id: currentSound?.id,
+          currentTime: audio.currentTime
+        }))
+      }
+
+      audio.onended = function() {
+        dispatch(setStatusPlay("play"))
+        dispatch(setStatusOpenById({ id: currentSound?.id, status: "closed" }))
+        dispatch(setCurrentTimeById({ id: currentSound?.id, currentTime: 0 }))
+        audio.play()
+      }
+
+      if (status == "play") {
+        audio.play()
+      } else if (status == "pause") {
+        audio.pause()
+      }
+    }
+  }, [status, currentSoundId])
+
+
   return (
-    <CardContainer className="w-full md:w-[50%] p-2">
-      {total > 0 ? (
-        <Fragment>
-          <MediaTitle title="title" subtitle="autor" />
-          <PlayList/>
-          <MediaControl />
-        </Fragment>
-      ): <DropAreaFiles/>}
+    <CardContainer className="w-full  md:w-[50%] p-2">
+      <audio id="audio" src={currentSound?.url}></audio>
+      <MediaTitle />
+      <PlayList />
+      <MediaControl />
     </CardContainer>
   )
 }
