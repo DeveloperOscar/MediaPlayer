@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { selectCurrentId, setStatusPlay } from "app/features/musicPlayerSlice";
 import PlayList from "components/molecules/play-list";
 import { EntityId } from "@reduxjs/toolkit";
+import useNextSound from "app/hooks/custom/useNextSound";
 
 interface Props {
   firstSoundId: EntityId
@@ -17,6 +18,7 @@ const MusicPlayer = ({ firstSoundId }: Props) => {
   const currentSound = useAppSelector((state) => selectSoundById(state, currentSoundId ? currentSoundId : firstSoundId ));
   const status = useAppSelector(state => state.musicPlayer.status);
   const dispatch = useAppDispatch();
+  const nextSound = useNextSound();
 
   useEffect(() => {
     const audio = document.getElementById("audio") as HTMLAudioElement | null;
@@ -24,6 +26,7 @@ const MusicPlayer = ({ firstSoundId }: Props) => {
       audio.onload = function() {
         audio.currentTime = currentSound ? currentSound.currentTime : 0
       }
+
       audio.ontimeupdate = function() {
         dispatch(setCurrentTimeById({
           id: currentSound?.id,
@@ -32,9 +35,9 @@ const MusicPlayer = ({ firstSoundId }: Props) => {
       }
 
       audio.onended = function() {
-        dispatch(setStatusPlay("play"))
-        dispatch(setStatusOpenById({ id: currentSound?.id, status: "closed" }))
+        nextSound()
         dispatch(setCurrentTimeById({ id: currentSound?.id, currentTime: 0 }))
+        dispatch(setStatusPlay("play"))
         audio.play()
       }
 
