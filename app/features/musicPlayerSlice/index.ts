@@ -25,6 +25,14 @@ const musicPlayerSlice = createSlice({
     setStatusPlay(state,action){
       state.status = action.payload;
     },
+
+    alternateShuffle(state){
+      state.shuffle = !state.shuffle;
+    },
+
+    alternateRepeat(state){
+      state.repeat = !state.repeat;
+    },
     
     setCurrentSoundId( state , action){
       state.currentSoundId = action.payload 
@@ -45,7 +53,9 @@ export const {
   setStatusPlay,
   setCurrentSoundId,
   pushPrevSoundId,
-  popPrevSoundId
+  popPrevSoundId,
+  alternateShuffle,
+  alternateRepeat,
 } =  musicPlayerSlice.actions;
 export const selectCurrentId = ( state : RootState ) => state.musicPlayer.currentSoundId;
 export const selectLastPrevSoundId = (state: RootState) => {

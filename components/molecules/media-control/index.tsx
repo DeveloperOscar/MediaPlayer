@@ -16,7 +16,7 @@ const MediaControl = () => {
   const sound = useAppSelector((state : RootState) => selectSoundById(state,currentSoundId ? currentSoundId : "" ))
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full sticky top-0">
       <ProgressBar currentTime={sound?.currentTime} duration={sound?.duration} />
       <div className="flex w-full justify-around">
         <ShuffleButton />

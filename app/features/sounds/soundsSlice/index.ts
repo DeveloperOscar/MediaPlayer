@@ -1,6 +1,5 @@
 import { createSlice, createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import type { RootState } from 'app/store'
-import { randomArange } from "helpers/react";
 
 export interface MusicEntity {
   readonly id: string,
@@ -69,14 +68,10 @@ export const selectSoundIdsByStatus = (status: "open" | "closed") => createSelec
 
 export const selectNextSoundId = createSelector(
   selectSoundIdsByStatus("open"),
-  (state: RootState) => state.musicPlayer.shuffle,
-  (ids,isShuffle) => {
+  (ids) => {
     if(ids.length == 0) return undefined;
-    if(isShuffle){
-      const randomNumber = randomArange(0,ids.length - 1)
-      return ids[randomNumber];
-    }
     return ids[0];
   }
 );
+
 

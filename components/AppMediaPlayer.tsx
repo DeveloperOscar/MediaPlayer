@@ -5,18 +5,16 @@ import { Fragment, useEffect } from "react";
 import DropAreaFiles from "./atoms/drop-area-files";
 import MusicPlayer from "./organism/music-player";
 
-let counter = 0;
 
 const AppMediaPlayer = () => {
   const total = useAppSelector(selectSoundsTotal)
   const firstSoundId = useAppSelector(state => state.sounds.ids[0])
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (firstSoundId && counter == 0) {
+    if (firstSoundId) {
       dispatch(setCurrentSoundId(firstSoundId))
-      counter += 1;
     }
-  })
+  },[firstSoundId])
 
   return (
     <Fragment>

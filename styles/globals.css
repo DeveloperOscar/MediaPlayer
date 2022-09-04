@@ -4,4 +4,22 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
 
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10%;
+  }
 
+.scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #313d4f;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: #6F8285;
+    border-radius: 100vh;
+    border: 3px solid #313d4f;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #dacdc6;
+}

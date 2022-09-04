@@ -1,10 +1,10 @@
-import { selectSoundById, setCurrentTimeById, setStatusOpenById } from "app/features/sounds/soundsSlice";
+import { selectSoundById,  selectSoundsTotal,  setCurrentTimeById } from "app/features/sounds/soundsSlice";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import CardContainer from "components/atoms/card-container";
 import MediaTitle from "components/atoms/media-title";
 import MediaControl from "components/molecules/media-control";
 import { useEffect } from "react";
-import { selectCurrentId, setStatusPlay } from "app/features/musicPlayerSlice";
+import { selectCurrentId  } from "app/features/musicPlayerSlice";
 import PlayList from "components/molecules/play-list";
 import { EntityId } from "@reduxjs/toolkit";
 import useNextSound from "app/hooks/custom/useNextSound";
@@ -17,6 +17,8 @@ const MusicPlayer = ({ firstSoundId }: Props) => {
   const currentSoundId = useAppSelector(selectCurrentId)
   const currentSound = useAppSelector((state) => selectSoundById(state, currentSoundId ? currentSoundId : firstSoundId ));
   const status = useAppSelector(state => state.musicPlayer.status);
+  const isRepeat = useAppSelector(state => state.musicPlayer.repeat);
+  const total = useAppSelector(selectSoundsTotal);
   const dispatch = useAppDispatch();
   const nextSound = useNextSound();
 
@@ -35,9 +37,10 @@ const MusicPlayer = ({ firstSoundId }: Props) => {
       }
 
       audio.onended = function() {
-        nextSound()
-        dispatch(setCurrentTimeById({ id: currentSound?.id, currentTime: 0 }))
-        dispatch(setStatusPlay("play"))
+        if(!isRepeat){
+          nextSound()
+          dispatch(setCurrentTimeById({ id: currentSound?.id, currentTime: 0 }))
+        }
         audio.play()
       }
 
@@ -47,15 +50,16 @@ const MusicPlayer = ({ firstSoundId }: Props) => {
         audio.pause()
       }
     }
-  }, [status, currentSoundId])
+  }, [status, currentSoundId,isRepeat])
 
 
   return (
-    <CardContainer className="w-full  md:w-[50%] p-2">
+    <CardContainer className="w-full xl:w-[50%]">
       <audio id="audio" src={currentSound?.url}></audio>
+      {total > 15 ? <MediaControl /> : ""}
       <MediaTitle />
       <PlayList />
-      <MediaControl />
+      {total <= 15 ? <MediaControl /> : ""}
     </CardContainer>
   )
 }

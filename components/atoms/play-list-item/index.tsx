@@ -1,19 +1,25 @@
 import { EntityId } from "@reduxjs/toolkit";
+import { selectCurrentId } from "app/features/musicPlayerSlice";
 import { selectSoundById } from "app/features/sounds/soundsSlice";
 import { useAppSelector } from "app/hooks";
 
 interface Props{
   id: EntityId,
+  index: number
 }
 
-const PlayListItem = ({id} : Props)  => {
+const PlayListItem = ({id,index} : Props)  => {
   const sound = useAppSelector( state => selectSoundById(state,id))
+  const currentSoundId = useAppSelector(selectCurrentId);
+  let textColor = "";
+  if(currentSoundId === sound?.id) textColor = "text-acent1"
+  else textColor = "";
   return (
-    <div className="bg-transparent lowercase text-textPrimary text-xl  capitalize hover:bg-neutral1 flex justify-between">
-      <p className="text-truncate whitespace-nowrap w-[70%]">
-        {sound ? sound.title : "titulo desconocido"}
+    <div className={`bg-transparent text-textPrimary text-xl capitalize hover:bg-neutral1 flex gap-2 justify-between ${textColor}`}>
+      <p className={`truncate ...  whitespace-nowrap`}>
+        {index+". "}{sound ? sound.title : "titulo desconocido"}
       </p>
-      <p>
+      <p className="whitespace-nowrap">
         {formatDuration((sound)? (sound.duration - sound.currentTime) : 0)}
       </p>
     </div>
