@@ -67,7 +67,7 @@ const DropAreaFiles = () => {
           height={200}
           priority
         />
-        <p className="font-mont md:text-xl">Arrastra y suelta tus pistas de audio favoritas</p>
+        <p className="font-mont md:text-xl text-center">Arrastra y suelta tus pistas de audio favoritas</p>
         <FileSelector onChange={onInputFiles} />
       </div>
     </CardContainer>
