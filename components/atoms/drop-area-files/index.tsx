@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { DragEventHandler, useCallback, useState } from "react";
+import { ChangeEventHandler, DragEventHandler, FormEventHandler, useCallback, useState } from "react";
 import { useAppDispatch } from "app/hooks";
 import { addSound } from "app/features/sounds/soundsSlice";
 import useLoadAudioFile from "app/hooks/custom/useLoadAudioFile";
 import CardContainer from "../card-container";
+import FileSelector from "../file-selector";
 
 const DropAreaFiles = () => {
   const [state, setState] = useState("");
@@ -38,6 +39,23 @@ const DropAreaFiles = () => {
       })
     })
   }, [])
+
+  const onInputFiles: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const fileList = e.target.files;
+    if (fileList) {
+      loadFiles(fileList).then(results => {
+        results.forEach((r, i) => {
+          if (r.status == 'fulfilled') {
+            const musicEntity = makeMusicEntity(r.value, fileList[i]);
+            dispatch(addSound(musicEntity));
+          }
+          else console.log("error for reason: ", r.reason) //reemplazar a futuro para mensajes de error con un dispatch
+        })
+      })
+    }
+  }
+
+
   return (
     <CardContainer className="p-4 w-full">
       <div className={`flex flex-col justify-center items-center  md:h-[500px] border-4 border-dashed border-acent2 ${state}`}
@@ -50,6 +68,7 @@ const DropAreaFiles = () => {
           priority
         />
         <p className="font-mont md:text-xl">Arrastra y suelta tus pistas de audio favoritas</p>
+        <FileSelector onChange={onInputFiles} />
       </div>
     </CardContainer>
 
